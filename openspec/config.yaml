@@ -1,0 +1,50 @@
+schema: spec-driven
+
+context: |
+  Proyecto: TestPsico, iniciativa de investigación para orientación vocacional/educativa exploratoria de bajo riesgo sobre la oferta autorizada de la UAGRM.
+  Repositorio: psicotest-backend; será propietario futuro del dominio, catálogo, perfiles, puntuación, afinidades, recomendaciones y contrato API.
+  Estado: repositorio vacío, sin implementación iniciada; las tecnologías y entidades descritas en docs/ son candidatas, no decisiones.
+  Arquitectura candidata: backend separado de un frontend; catálogo, evidencia psicométrica y evidencia de uso deben permanecer trazables y versionados.
+  Artefactos SDD: OpenSpec dentro de este repositorio es la única fuente compartida y versionada.
+  Idioma de artefactos: español neutral y profesional.
+  Preferencias de ejecución: auto (modo automático solicitado para el cambio f1-investigacion-institucional-seguridad); delivery_strategy ask-on-risk (resuelto por el usuario antes de sdd-apply; cambio documental, sin PRs); review_budget_lines 400.
+
+strict_tdd: false
+
+testing:
+  runner: null
+  command: null
+  framework: null
+  explanation: "No se detectó código fuente, runner de pruebas ni configuración de pruebas en el repositorio."
+  layers:
+    unit: { available: false, tool: null }
+    integration: { available: false, tool: null }
+    e2e: { available: false, tool: null }
+  coverage: { available: false, command: null }
+  quality:
+    linter: { available: false, command: null }
+    type_checker: { available: false, command: null }
+    formatter: { available: false, command: null }
+
+rules:
+  proposal:
+    - Registrar alcance, bloqueos de investigación y plan de reversión para cambios riesgosos.
+  specs:
+    - Escribir los artefactos en español profesional.
+    - Usar escenarios Given/When/Then y distinguir hipótesis de comportamiento acordado.
+    - No afirmar admisión, elegibilidad, éxito, empleabilidad, diagnóstico ni decisiones de alto impacto.
+  design:
+    - Documentar decisiones con su justificación y mantener separadas las líneas de evidencia.
+  tasks:
+    - Agrupar por fase y mantener tareas realizables en una sesión.
+  apply:
+    guidelines:
+      - No implementar hasta contar con autorización y evidencia de las puertas de investigación correspondientes.
+    tdd: false
+    test_command: ""
+  verify:
+    test_command: ""
+    build_command: ""
+    coverage_threshold: 0
+  archive:
+    - Advertir antes de fusionar deltas destructivos.

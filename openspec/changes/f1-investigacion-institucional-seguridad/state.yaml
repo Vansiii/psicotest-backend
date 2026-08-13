@@ -1,0 +1,36 @@
+schema: gentle-ai.sdd-change-state
+change_id: f1-investigacion-institucional-seguridad
+title: "Fase 1 del producto — Investigación institucional y límites de seguridad"
+product_phase: 1
+project_id: psicotest-backend
+cross_repo_change_id: f1-investigacion-institucional-seguridad
+related_project: psicotest-frontend
+responsable_provisional: Marces
+artifact_store: openspec
+delivery_strategy: ask-on-risk
+
+# Nota: la Fase 1 del producto NO es una fase interna de SDD. Las fases SDD
+# (explore, proposal, spec, design, tasks) son el flujo de trabajo interno que
+# documenta la investigación; crear artefactos no aprueba las puertas 0 y 1 ni
+# completa la Fase 1.
+
+estado_fase_producto: "NO INICIADA — puertas 0 y 1 no aprobadas"
+contrato:
+  backend_propietario: "El backend (psicotest-backend) será propietario futuro del contrato de dominio/API."
+  frontend_restriccion: "El frontend (psicotest-frontend) no puede inventar ese contrato: solo lo consumirá cuando esté publicado y versionado por el backend."
+
+phases:
+  explore: completed
+  proposal: completed
+  spec: completed
+  design: completed
+  tasks: completed
+  apply: completed
+  verify: blocked
+  archive: blocked
+
+nota_flujo:
+  - "Flujo automático completado hasta apply (decisión del usuario)."
+  - "sdd-apply ejecutado en modo documental: 9/21 tareas completadas con evidencia del repositorio; 12 pendientes/bloqueadas por evidencia institucional externa (registradas, no inventadas)."
+  - "sdd-verify y sdd-archive NO proceden: verify requiere todas las tareas completas; archive requiere verify-report y tareas completas."
+  - "Las tareas pendientes se reanudan cuando exista evidencia externa verificable (respuestas institucionales, responsables confirmados, marco legal)."
