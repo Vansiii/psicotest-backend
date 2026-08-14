@@ -88,29 +88,46 @@ LIMITATION = (
     "No expresa requisito de admisión, elegibilidad ni pronóstico de éxito."
 )
 
+LABEL_V2 = "sintetico-2026-02"
 
-def seed() -> str:
+# v2 demuestra que una nueva instantánea no reescribe la anterior (docs/05 §6):
+# reutiliza los mismos programas y agrega uno nuevo, sin tocar los datos de v1.
+PROGRAMS_V2 = PROGRAMS + [
+    (
+        "SYN-009", "Programa sintético de estadística", "FCET", "SC-CENTRAL",
+        "licenciatura", "presencial", "oferta_regular",
+        "Programa de ejemplo agregado en la segunda instantánea del catálogo.",
+        ["diseñar muestreos", "analizar variabilidad", "comunicar resultados"],
+    ),
+]
+
+
+def _seed_version(label: str, status: str, effective_from: dt.date, programs: list[tuple]) -> str:
+    """Crea una instantánea de catálogo si `label` no existe. No modifica
+    ninguna instantánea previa: cada llamada agrega filas nuevas."""
     Base.metadata.create_all(engine)
     with Session() as db:
-        if db.scalars(select(CatalogVersion).where(CatalogVersion.label == LABEL)).first():
-            return f"La versión '{LABEL}' ya existe; no se reescribe."
+        if db.scalars(select(CatalogVersion).where(CatalogVersion.label == label)).first():
+            return f"La versión '{label}' ya existe; no se reescribe."
 
         version = CatalogVersion(
-            label=LABEL,
-            source=SOURCE,
-            is_synthetic=True,
-            status="publicada",
-            effective_from=dt.date(2026, 1, 1),
+            label=label, source=SOURCE, is_synthetic=True, status=status, effective_from=effective_from
         )
         db.add(version)
 
-        faculties = {code: Faculty(code=code, name=name) for code, name in FACULTIES}
-        campuses = {code: Campus(code=code, name=name) for code, name in CAMPUSES}
-        for existing in (faculties, campuses):
-            db.add_all(existing.values())
+        faculties = {
+            code: db.scalars(select(Faculty).where(Faculty.code == code)).first() or Faculty(code=code, name=name)
+            for code, name in FACULTIES
+        }
+        campuses = {
+            code: db.scalars(select(Campus).where(Campus.code == code)).first() or Campus(code=code, name=name)
+            for code, name in CAMPUSES
+        }
+        db.add_all(f for f in faculties.values() if f.id is None)
+        db.add_all(c for c in campuses.values() if c.id is None)
         db.flush()
 
-        for ext_id, name, fac, camp, level, modality, avail, summary, activities in PROGRAMS:
+        for ext_id, name, fac, camp, level, modality, avail, summary, activities in programs:
             program = Program(
                 catalog_version=version,
                 external_id=ext_id,
@@ -131,13 +148,22 @@ def seed() -> str:
                     activities=activities,
                     sources=[SOURCE],
                     limitations=LIMITATION,
-                    reviewed_at=dt.date(2026, 1, 1),
+                    reviewed_at=effective_from,
                 )
             )
 
         db.commit()
-        return f"Sembrada la versión '{LABEL}' con {len(PROGRAMS)} programas sintéticos."
+        return f"Sembrada la versión '{label}' con {len(programs)} programas sintéticos."
+
+
+def seed() -> str:
+    return _seed_version(LABEL, "publicada", dt.date(2026, 1, 1), PROGRAMS)
+
+
+def seed_v2() -> str:
+    return _seed_version(LABEL_V2, "publicada", dt.date(2026, 2, 1), PROGRAMS_V2)
 
 
 if __name__ == "__main__":
     print(seed())
+    print(seed_v2())

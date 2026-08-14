@@ -89,3 +89,29 @@ def test_borrador_solo_accesible_por_nombre(client):
 
 def test_seed_no_reescribe_una_version_existente(client):
     assert "ya existe" in seed_module.seed()
+
+
+def test_nueva_version_no_altera_la_anterior(client):
+    """Principio de inmutabilidad (docs/05 §6): publicar una segunda
+    instantánea no debe cambiar ni un solo campo de la primera."""
+    v1_antes = client.get("/programs", params={"catalog": seed_module.LABEL}).json()
+
+    seed_module.seed_v2()
+
+    v1_despues = client.get("/programs", params={"catalog": seed_module.LABEL}).json()
+    assert v1_despues == v1_antes
+
+    v2 = client.get("/programs", params={"catalog": seed_module.LABEL_V2}).json()
+    assert v2["count"] == len(seed_module.PROGRAMS_V2)
+
+
+def test_sin_catalog_param_resuelve_a_la_version_publicada_mas_reciente(client):
+    seed_module.seed_v2()
+    body = client.get("/programs").json()
+    assert body["catalog"]["label"] == seed_module.LABEL_V2
+
+
+def test_catalog_versions_lista_ambas_sin_perder_la_primera(client):
+    seed_module.seed_v2()
+    labels = {v["label"] for v in client.get("/catalog/versions").json()}
+    assert labels == {seed_module.LABEL, seed_module.LABEL_V2}
