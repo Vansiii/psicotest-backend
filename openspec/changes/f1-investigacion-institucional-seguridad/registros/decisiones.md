@@ -147,6 +147,7 @@
 - **Estado:** VIGENTE como decisión de equipo; **no** sustituye la autorización institucional.
 - **Condición de revocación:** si la institución aprueba un catálogo autorizado, la versión sintética **DEBE** dejar de publicarse; y ninguna versión con `is_synthetic: true` puede servirse a una persona en orientación real.
 - **Fuentes:** [tasks.md — Fuera del alcance](../tasks.md), [docs/05 §5 y §6](../../../../docs/05-stack-tecnologico-y-arquitectura.md), [docs/06 — Fase 2](../../../../docs/06-reparto-de-implementacion-por-fases.md).
+- **Enlace recíproco:** [psicotest-frontend/openspec/changes/f1-investigacion-institucional-seguridad/registros/decisiones.md](../../../../../frontend/openspec/changes/f1-investigacion-institucional-seguridad/registros/decisiones.md) (consumo del contrato desde el frontend).
 
 ## Convención de estado
 

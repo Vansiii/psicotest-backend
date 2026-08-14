@@ -10,6 +10,7 @@ from __future__ import annotations
 from typing import Annotated
 
 from fastapi import Depends, FastAPI, HTTPException, Query
+from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy import select
 from sqlalchemy.orm import Session as OrmSession
 
@@ -24,6 +25,15 @@ app = FastAPI(
         "cada respuesta declara su procedencia en `catalog`. No expresa "
         "admisión, elegibilidad ni recomendación."
     ),
+)
+
+# Prototipo de investigación: el frontend aún no tiene dominio publicado.
+# ponytail: origen abierto para desarrollo local, restringir cuando exista despliegue real.
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_methods=["GET"],
+    allow_headers=["*"],
 )
 
 
@@ -55,11 +65,16 @@ def _resolve_version(db: OrmSession, label: str | None) -> CatalogVersion:
 
 
 def _to_out(program: Program) -> ProgramOut:
+    # faculty_code/campus_code se exponen porque son los valores que aceptan
+    # los filtros de esta misma API: sin ellos el consumidor no puede
+    # construir una consulta filtrada válida a partir de una respuesta previa.
     return ProgramOut(
         external_id=program.external_id,
         name=program.name,
         faculty=program.faculty.name,
+        faculty_code=program.faculty.code,
         campus=program.campus.name,
+        campus_code=program.campus.code,
         level=program.level,
         modality=program.modality,
         availability=program.availability,

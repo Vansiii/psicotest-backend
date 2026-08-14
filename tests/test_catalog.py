@@ -50,6 +50,7 @@ def test_toda_respuesta_declara_procedencia_sintetica(client):
 def test_filtros_explicitos_se_combinan(client):
     fcet = client.get("/programs", params={"faculty": "FCET"}).json()
     assert fcet["count"] == 3
+    assert fcet["programs"][0]["faculty_code"] == "FCET"
 
     combinado = client.get(
         "/programs", params={"faculty": "FCET", "modality": "presencial"}

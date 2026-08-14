@@ -27,7 +27,9 @@ class ProgramOut(BaseModel):
     external_id: str
     name: str
     faculty: str
+    faculty_code: str
     campus: str
+    campus_code: str
     level: str
     modality: str
     availability: str
