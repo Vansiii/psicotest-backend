@@ -37,6 +37,10 @@ def _session(Session):
         yield s
 
 
+def test_health(client):
+    assert client.get("/health").json() == {"status": "ok"}
+
+
 def test_lista_completa_sin_prefiltro(client):
     body = client.get("/programs").json()
     assert body["count"] == len(seed_module.PROGRAMS)
@@ -59,6 +63,10 @@ def test_filtros_explicitos_se_combinan(client):
     assert {p["external_id"] for p in combinado["programs"]} == {"SYN-001", "SYN-002"}
 
     assert client.get("/programs", params={"faculty": "NO-EXISTE"}).json()["count"] == 0
+
+    norte = client.get("/programs", params={"campus": "SC-NORTE", "level": "licenciatura"}).json()
+    assert norte["count"] == 3
+    assert {p["campus_code"] for p in norte["programs"]} == {"SC-NORTE"}
 
 
 def test_detalle_incluye_perfil_con_limites(client):
