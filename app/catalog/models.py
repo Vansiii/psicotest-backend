@@ -1,34 +1,19 @@
-"""Modelo de catálogo institucional versionado.
+"""Entidades del dominio de catálogo institucional.
 
 Regla de inmutabilidad (docs/05 §6): un resultado histórico no se reescribe.
 Se cumple sin triggers ni auditoría: la API es de solo lectura y una corrección
 del catálogo se publica como una `CatalogVersion` nueva, nunca editando una
-existente. `app/seed.py` es el único escritor.
+existente. `app/catalog/seed.py` es el único escritor.
 """
 
 from __future__ import annotations
 
 import datetime as dt
-import os
-from pathlib import Path
 
-from dotenv import load_dotenv
-from sqlalchemy import (
-    JSON,
-    Boolean,
-    Date,
-    DateTime,
-    ForeignKey,
-    String,
-    UniqueConstraint,
-    create_engine,
-)
-from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, relationship, sessionmaker
-from sqlalchemy.pool import NullPool
+from sqlalchemy import JSON, Boolean, Date, DateTime, ForeignKey, String, UniqueConstraint
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 
-
-class Base(DeclarativeBase):
-    pass
+from app.core.db import Base
 
 
 class CatalogVersion(Base):
@@ -109,17 +94,3 @@ class ProgramProfile(Base):
     reviewed_at: Mapped[dt.date | None] = mapped_column(Date, nullable=True)
 
     program: Mapped[Program] = relationship(back_populates="profiles")
-
-
-def database_url() -> str:
-    load_dotenv(Path(__file__).resolve().parent.parent / ".env")
-    raw = os.getenv("CONNECTION_STRING")
-    if not raw:
-        return "sqlite:///./catalogo.db"
-    return raw.replace("postgresql://", "postgresql+psycopg://", 1)
-
-
-# NullPool: el pooler transaccional de Supabase (puerto 6543) ya agrupa
-# conexiones; un segundo pool encima agota el límite del proyecto.
-engine = create_engine(database_url(), poolclass=NullPool)
-Session = sessionmaker(engine, expire_on_commit=False)

@@ -8,9 +8,10 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.pool import StaticPool
 
-from app import seed as seed_module
-from app.main import app, get_session
-from app.models import Base, CatalogVersion
+from app.catalog import seed as seed_module
+from app.catalog.models import CatalogVersion
+from app.core.db import Base, get_session
+from app.main import app
 
 
 @pytest.fixture(name="client")

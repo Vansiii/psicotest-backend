@@ -26,6 +26,11 @@ testing:
     type_checker: { available: false, command: null }
     formatter: { available: false, command: null }
 
+ci:
+  provider: "GitHub Actions"
+  workflow: ".github/workflows/ci.yml"
+  runs: "python -m pytest -q sobre SQLite en memoria; no usa la base Postgres real ni secretos."
+
 rules:
   proposal:
     - Registrar alcance, bloqueos de investigación y plan de reversión para cambios riesgosos.

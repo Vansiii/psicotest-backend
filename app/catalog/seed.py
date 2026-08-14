@@ -6,7 +6,7 @@ programas [S29] y la página de carreras expone ~80 entradas con repeticiones
 [S30]. Elegir una de esas cifras aquí sería inventar catálogo, así que se
 siembra una muestra reducida y marcada, suficiente para ejercitar la API.
 
-Uso: python -m app.seed
+Uso: python -m app.catalog.seed
 """
 
 from __future__ import annotations
@@ -15,7 +15,8 @@ import datetime as dt
 
 from sqlalchemy import select
 
-from app.models import Base, Campus, CatalogVersion, Faculty, Program, ProgramProfile, Session, engine
+from app.catalog.models import Campus, CatalogVersion, Faculty, Program, ProgramProfile
+from app.core.db import Base, Session, engine
 
 LABEL = "sintetico-2026-01"
 SOURCE = "DATOS SINTÉTICOS DE PROTOTIPO — no provienen de una fuente autorizada UAGRM"

@@ -9,6 +9,20 @@ UAGRM; esa reconciliación sigue pendiente (docs/03, decisión D-08).
 Fuera de alcance: evaluación, puntuación, afinidades, recomendaciones. Ver
 `docs/` y `openspec/` para el contexto completo de investigación.
 
+## Estructura
+
+```text
+app/
+├── main.py       # composición: crea la app FastAPI, monta routers
+├── core/         # infraestructura compartida (motor/sesión de base de datos)
+└── catalog/      # dominio de catálogo: models, schemas, service, router, seed
+```
+
+Cada dominio futuro autorizado (evaluación, puntuación, afinidades) se
+agregaría como un paquete hermano de `catalog/`, con su propio
+`models.py`/`schemas.py`/`service.py`/`router.py` — no se crean vacíos por
+adelantado.
+
 ## Requisitos
 
 - Python 3.12+
@@ -19,7 +33,7 @@ Fuera de alcance: evaluación, puntuación, afinidades, recomendaciones. Ver
 
 ```bash
 python -m pip install -e ".[dev]"
-python -m app.seed        # siembra la versión sintética si no existe
-python -m pytest -q       # 8 pruebas sobre SQLite en memoria
+python -m app.catalog.seed   # siembra las versiones sintéticas si no existen
+python -m pytest -q          # pruebas sobre SQLite en memoria
 python -m uvicorn app.main:app --reload   # http://127.0.0.1:8000/docs
 ```
