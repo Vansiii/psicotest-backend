@@ -7,6 +7,7 @@ from __future__ import annotations
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
+from app.assessment.router import router as assessment_router
 from app.catalog.router import router as catalog_router
 
 app = FastAPI(
@@ -24,11 +25,12 @@ app = FastAPI(
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
-    allow_methods=["GET"],
+    allow_methods=["GET", "POST"],
     allow_headers=["*"],
 )
 
 app.include_router(catalog_router)
+app.include_router(assessment_router)
 
 
 @app.get("/health")

@@ -15,9 +15,30 @@ delivery_strategy: ask-on-risk
 # completa la Fase 1.
 
 estado_fase_producto: "NO INICIADA — puertas 0 y 1 no aprobadas"
+
+# La línea anterior se refiere a la INVESTIGACIÓN institucional (puertas 0-1),
+# que sigue sin aprobarse. NO significa que el repositorio esté vacío: existe
+# un prototipo técnico con datos sintéticos, abierto por las decisiones D-13
+# (catálogo) y D-14 (evaluación). Un prototipo sin personas, sin respuestas
+# reales y sin catálogo autorizado no atraviesa esas puertas ni las aprueba.
+prototipo_tecnico:
+  estado: "VIGENTE — código ejecutable con datos exclusivamente sintéticos"
+  decisiones_que_lo_habilitan: ["D-13", "D-14", "D-15"]
+  aprueba_puertas: false
+  stack: "FastAPI + Pydantic + SQLAlchemy 2.0 sobre PostgreSQL; frontend React 19 + TypeScript + Vite"
+  dominios_implementados:
+    - "catalog — catálogo institucional versionado, solo lectura (D-13)"
+    - "assessment — cuestionario vocacional, sesiones y afinidades (D-14)"
+  contrato_publicado: "docs/07-contrato-api.md"
+  marcado_obligatorio: "Toda versión servida lleva is_synthetic y source; ninguna puede usarse con una persona real en orientación."
+  alcance_cerrado:
+    - "Uso con participantes reales, consentimiento/asentimiento formal."
+    - "Canal de ayuda o derivación real a Orientación Vocacional."
+    - "Cualquier afirmación de validez psicométrica o de catálogo autorizado."
+
 contrato:
-  backend_propietario: "El backend (psicotest-backend) será propietario futuro del contrato de dominio/API."
-  frontend_restriccion: "El frontend (psicotest-frontend) no puede inventar ese contrato: solo lo consumirá cuando esté publicado y versionado por el backend."
+  backend_propietario: "El backend (psicotest-backend) es propietario del contrato de dominio/API; publicado y versionado en docs/07-contrato-api.md."
+  frontend_restriccion: "El frontend (psicotest-frontend) no inventa ese contrato: consume la versión publicada por el backend."
 
 phases:
   explore: completed
@@ -34,3 +55,4 @@ nota_flujo:
   - "sdd-apply ejecutado en modo documental: 9/21 tareas completadas con evidencia del repositorio; 12 pendientes/bloqueadas por evidencia institucional externa (registradas, no inventadas)."
   - "sdd-verify y sdd-archive NO proceden: verify requiere todas las tareas completas; archive requiere verify-report y tareas completas."
   - "Las tareas pendientes se reanudan cuando exista evidencia externa verificable (respuestas institucionales, responsables confirmados, marco legal)."
+  - "CORRECCIÓN 2026-08-14: las tres notas anteriores describen SOLO las tareas de investigación de tasks.md, que siguen sin resolverse. NO describen el repositorio: desde D-13 y D-14 existe código, API, base de datos y pruebas del prototipo sintético (ver bloque prototipo_tecnico). Las versiones previas de este archivo y de specs/ afirmaban ausencia de código; era inexacto y queda corregido aquí."

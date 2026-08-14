@@ -149,6 +149,52 @@
 - **Fuentes:** [tasks.md — Fuera del alcance](../tasks.md), [docs/05 §5 y §6](../../../../docs/05-stack-tecnologico-y-arquitectura.md), [docs/06 — Fase 2](../../../../docs/06-reparto-de-implementacion-por-fases.md).
 - **Enlace recíproco:** [psicotest-frontend/openspec/changes/f1-investigacion-institucional-seguridad/registros/decisiones.md](../../../../../frontend/openspec/changes/f1-investigacion-institucional-seguridad/registros/decisiones.md) (consumo del contrato desde el frontend).
 
+### D-14 — Extensión de la vía de prototipo a evaluación, puntuación y afinidades
+
+- **Qué se decidió:** extender la vía de prototipo técnico abierta por D-13 al dominio de
+  evaluación: cuestionario vocacional, puntuación por dominios y motor de afinidades contra el
+  catálogo sintético, con contenido **enteramente sintético y marcado**. D-13 dejaba este
+  alcance cerrado ("evaluación, puntuación, afinidades y recomendación... ningún stub puede
+  sustituirla"); esta decisión lo reabre explícitamente, bajo las mismas salvaguardas: sin
+  personas reales, sin respuestas reales, sin instrumento validado.
+- **Quién decidió:** el usuario del proyecto, con el contexto de D-01 a D-13 explicado
+  previamente, 2026-08-14. Esta decisión **NO** es institucional y **NO** aprueba ninguna
+  puerta: D-01 a D-13 siguen en su estado.
+- **Alcance abierto:** cuestionario vocacional (`AssessmentVersion`, `Domain`, `Question`, ítems
+  originales redactados para este prototipo — no copiados de un instrumento existente),
+  sesiones de una sola escritura (`TestSession`, `Response`), y un motor de afinidades
+  (`ProgramDomainWeight` + `compute_affinities`) que compara puntajes de dominio contra pesos
+  sintéticos declarados por programa.
+- **Alcance que sigue cerrado:** consentimiento/asentimiento, canal de ayuda o derivación real a
+  Orientación Vocacional, cualquier uso con participantes reales, y — como ya establecía D-13 —
+  cualquier afirmación de validez psicométrica.
+- **Salvaguardas aplicadas:**
+  - toda versión de cuestionario lleva `is_synthetic` y `source`, igual que el catálogo, y
+    ambos viajan en cada `ResultOut`;
+  - `ResultOut.limitations` y `AffinityOut.uncertainty` declaran explícitamente que es un
+    prototipo sin evidencia psicométrica, en cada respuesta;
+  - un programa sin pesos de dominio declarados **no** recibe una afinidad inventada: se excluye
+    del resultado;
+  - la salida es plural (todas las afinidades calculables, no una única "carrera correcta"), con
+    empates visibles por posición relativa;
+  - `TestSession` congela `domain_scores` y `affinities` al momento del cálculo — un cambio
+    posterior en el catálogo o el cuestionario no reescribe un resultado ya emitido.
+- **Estado:** VIGENTE como decisión de usuario/equipo; **no** sustituye la autorización
+  institucional ni la evidencia psicométrica que D-01 a D-13 siguen exigiendo.
+- **Condición de revocación:** igual que D-13 — si la institución aprueba un instrumento
+  validado, la versión sintética **DEBE** dejar de publicarse, y ninguna versión con
+  `is_synthetic: true` puede usarse con una persona real en orientación.
+- **Fuentes:** [D-13](#d-13--apertura-de-una-vía-de-prototipo-técnico-con-datos-sintéticos),
+  [docs/01 §5-6](../../../../docs/01-psychometric-foundations.md),
+  [docs/02 §6](../../../../docs/02-profile-model.md).
+- **Enlace recíproco:** [psicotest-frontend/openspec/changes/f1-investigacion-institucional-seguridad/registros/decisiones.md](../../../../../frontend/openspec/changes/f1-investigacion-institucional-seguridad/registros/decisiones.md).
+
+### D-15 — Sistema visual del prototipo (decisión del frontend)
+
+- **Dónde vive:** esta decisión pertenece a `psicotest-frontend` y se registra allí: [D-15 (frontend)](../../../../../frontend/openspec/changes/f1-investigacion-institucional-seguridad/registros/decisiones.md). Se referencia aquí solo para que la numeración D-13 → D-15 no tenga huecos al leer este archivo.
+- **Resumen:** sistema de diseño propio en CSS plano, sin añadir dependencias de UI; paleta neutra deliberadamente distinta de la identidad oficial UAGRM.
+- **Efecto sobre el backend:** ninguno. No altera el contrato publicado en [docs/07-contrato-api.md](../../../../docs/07-contrato-api.md) ni el alcance de D-14.
+
 ## Convención de estado
 
 - **PENDIENTE DE CONFIRMACIÓN:** falta respuesta, autoridad o evidencia externa verificable.

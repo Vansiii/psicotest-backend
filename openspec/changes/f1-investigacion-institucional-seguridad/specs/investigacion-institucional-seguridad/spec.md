@@ -8,7 +8,8 @@
 - responsable provisional: Marces
 - Contrato: el backend será propietario futuro del contrato de dominio/API; el frontend no puede inventar ese contrato y solo lo consumirá cuando esté publicado y versionado.
 - Puertas 0 y 1: NO aprobadas. Este spec documenta los requisitos de la INVESTIGACIÓN; crearlo no aprueba las puertas.
-- Naturaleza: cambio de investigación (documentar, consultar, decidir y registrar). Sin código, API, infraestructura, autenticación ni base de datos.
+- Naturaleza: cambio de investigación (documentar, consultar, decidir y registrar). Los requisitos de este spec son documentales; su cumplimiento no se satisface escribiendo código.
+- **Corrección 2026-08-14:** este documento decía «Sin código, API, infraestructura, autenticación ni base de datos». Esa afirmación dejó de ser cierta con la decisión D-13 y ya no lo es con D-14: el repositorio contiene un prototipo ejecutable (FastAPI, SQLAlchemy, PostgreSQL, pruebas) con datos **exclusivamente sintéticos**. El prototipo **no** satisface ningún requisito de este spec ni aprueba las puertas 0–1: las protege por otra vía (sin personas, sin respuestas reales, sin catálogo autorizado). Contrato publicado en [docs/07-contrato-api.md](../../../../../docs/07-contrato-api.md); decisiones en [registros/decisiones.md](../../registros/decisiones.md).
 
 ## ADDED Requirements
 

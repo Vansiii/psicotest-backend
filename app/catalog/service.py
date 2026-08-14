@@ -6,31 +6,15 @@ resolver y cómo proyectar una fila `Program` al contrato de salida.
 
 from __future__ import annotations
 
-from fastapi import HTTPException
-from sqlalchemy import select
 from sqlalchemy.orm import Session as OrmSession
 
 from app.catalog.models import CatalogVersion, Program
 from app.catalog.schemas import ProgramOut
+from app.core.versioning import resolve_published
 
 
 def resolve_version(db: OrmSession, label: str | None) -> CatalogVersion:
-    """Sin `label` se sirve la última versión publicada. Una versión en
-    borrador solo se alcanza pidiéndola por nombre."""
-    stmt = select(CatalogVersion)
-    if label:
-        stmt = stmt.where(CatalogVersion.label == label)
-    else:
-        stmt = stmt.where(CatalogVersion.status == "publicada")
-    version = db.scalars(stmt.order_by(CatalogVersion.created_at.desc())).first()
-    if version is None:
-        raise HTTPException(
-            404,
-            f"No existe la versión de catálogo '{label}'."
-            if label
-            else "No hay ninguna versión de catálogo publicada.",
-        )
-    return version
+    return resolve_published(db, CatalogVersion, label, "catálogo")
 
 
 def to_program_out(program: Program) -> ProgramOut:

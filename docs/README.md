@@ -28,6 +28,7 @@ Existen dos repositorios Git independientes y vacíos: `psicotest-frontend` y `p
 4. [04 — Plan de investigación](./04-research-plan.md): muestreo, reconciliación del catálogo, respuesta-proceso, pilotos y puertas previas a implementación.
 5. [05 — Arquitectura candidata](./05-stack-tecnologico-y-arquitectura.md): límites de los dos repositorios, contratos y decisiones técnicas aún abiertas.
 6. [06 — Reparto futuro por fases](./06-reparto-de-implementacion-por-fases.md): responsables provisionales, entregas y las seis fases marcadas como **NO INICIADAS**.
+7. [07 — Contrato de dominio/API](./07-contrato-api.md): **único documento que describe software existente**. Endpoints, formas y reglas del prototipo sintético abierto por las decisiones D-13 a D-15. Los documentos 01–06 son investigación previa y varios de ellos afirman que no hay código; esa afirmación quedó desactualizada por esas decisiones y no se ha reconciliado en su texto.
 
 ## Evidencia institucional y límites
 

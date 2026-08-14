@@ -1,21 +1,25 @@
 # psicotest-backend
 
-Prototipo de investigación (decisión D-13, ver
+Prototipo de investigación (decisiones D-13 y D-14, ver
 `openspec/changes/f1-investigacion-institucional-seguridad/registros/decisiones.md`).
-Expone un catálogo institucional **versionado y de solo lectura**. Los datos
-sembrados son sintéticos (`is_synthetic: true`) — no son la oferta real de la
-UAGRM; esa reconciliación sigue pendiente (docs/03, decisión D-08).
+Expone un catálogo institucional **versionado y de solo lectura**, y un
+cuestionario vocacional con motor de afinidades. Todos los datos sembrados
+son sintéticos (`is_synthetic: true`) — no son la oferta real de la UAGRM ni
+un instrumento psicométrico validado; esa reconciliación y esa validación
+siguen pendientes (docs/03, decisión D-08; docs/01, docs/02).
 
-Fuera de alcance: evaluación, puntuación, afinidades, recomendaciones. Ver
-`docs/` y `openspec/` para el contexto completo de investigación.
+Fuera de alcance: aprobación institucional, consentimiento/asentimiento
+formal, canal de derivación real a Orientación Vocacional. Ver `docs/` y
+`openspec/` para el contexto completo de investigación.
 
 ## Estructura
 
 ```text
 app/
-├── main.py       # composición: crea la app FastAPI, monta routers
-├── core/         # infraestructura compartida (motor/sesión de base de datos)
-└── catalog/      # dominio de catálogo: models, schemas, service, router, seed
+├── main.py         # composición: crea la app FastAPI, monta routers
+├── core/           # infraestructura compartida (db, resolución de versiones)
+├── catalog/        # dominio de catálogo: models, schemas, service, router, seed
+└── assessment/     # dominio de evaluación: cuestionario, sesiones, afinidades
 ```
 
 Cada dominio futuro autorizado (evaluación, puntuación, afinidades) se
@@ -33,7 +37,8 @@ adelantado.
 
 ```bash
 python -m pip install -e ".[dev]"
-python -m app.catalog.seed   # siembra las versiones sintéticas si no existen
-python -m pytest -q          # pruebas sobre SQLite en memoria
+python -m app.catalog.seed      # siembra el catálogo sintético si no existe
+python -m app.assessment.seed   # siembra el cuestionario sintético si no existe
+python -m pytest -q             # pruebas sobre SQLite en memoria
 python -m uvicorn app.main:app --reload   # http://127.0.0.1:8000/docs
 ```
