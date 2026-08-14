@@ -12,13 +12,13 @@ context: |
 strict_tdd: false
 
 testing:
-  runner: null
-  command: null
-  framework: null
-  explanation: "No se detectó código fuente, runner de pruebas ni configuración de pruebas en el repositorio."
+  runner: pytest
+  command: "python -m pytest -q"
+  framework: pytest
+  explanation: "Prototipo de catálogo (decisión D-13). Las pruebas corren sobre SQLite en memoria; PostgreSQL solo se usa en ejecución real."
   layers:
     unit: { available: false, tool: null }
-    integration: { available: false, tool: null }
+    integration: { available: true, tool: "pytest + fastapi.testclient" }
     e2e: { available: false, tool: null }
   coverage: { available: false, command: null }
   quality:
@@ -39,11 +39,12 @@ rules:
     - Agrupar por fase y mantener tareas realizables en una sesión.
   apply:
     guidelines:
-      - No implementar hasta contar con autorización y evidencia de las puertas de investigación correspondientes.
+      - No implementar comportamiento de orientación con personas reales hasta contar con autorización y evidencia de las puertas correspondientes.
+      - El prototipo (D-13) solo admite datos sintéticos marcados con `is_synthetic`.
     tdd: false
-    test_command: ""
+    test_command: "python -m pytest -q"
   verify:
-    test_command: ""
+    test_command: "python -m pytest -q"
     build_command: ""
     coverage_threshold: 0
   archive:

@@ -132,6 +132,22 @@
 - **Bloqueo:** no hay endpoints, contrato publicado ni versión consumible en el repositorio.
 - **Fuentes:** [docs/05 — Modelo de dos repositorios y contrato API](../../../../docs/05-stack-tecnologico-y-arquitectura.md), [docs/06 — Contrato cruzado](../../../../docs/06-reparto-de-implementacion-por-fases.md), [spec.md — Propiedad futura del contrato](../specs/investigacion-institucional-seguridad/spec.md).
 
+### D-13 — Apertura de una vía de prototipo técnico con datos sintéticos
+
+- **Qué se decidió:** construir software con datos **sintéticos y marcados**, en paralelo a las puertas de investigación pendientes, sin esperar a la aprobación institucional. Las puertas 0–1 protegen el **uso con participantes reales**; un prototipo sin personas, sin respuestas reales y sin catálogo autorizado no las atraviesa.
+- **Quién decidió:** el equipo del proyecto, 2026-08-13. Esta decisión **NO** es institucional y **NO** aprueba ninguna puerta: D-01 a D-12 siguen en su estado.
+- **Alcance abierto:** catálogo institucional versionado (Fase 2 del producto), únicamente lectura.
+- **Alcance que sigue cerrado:** evaluación, puntuación, afinidades y recomendación. Dependen de evidencia psicométrica inexistente; ningún stub puede sustituirla.
+- **Salvaguardas aplicadas:**
+  - toda versión de catálogo lleva `is_synthetic` y `source`, y ambos viajan en **cada** respuesta de la API;
+  - los programas sembrados usan IDs `SYN-*` y nombres explícitamente sintéticos; no se copió ni se infirió la oferta real de la UAGRM, y la discrepancia [S29]/[S30] sigue sin resolver (ver D-08);
+  - la API no tiene endpoints de escritura: una corrección se publica como versión nueva, nunca editando una existente (docs/05 §6);
+  - cada `program_profile` incluye `limitations` que niega admisión, elegibilidad y pronóstico de éxito.
+- **Decisiones técnicas tomadas** (cerraban «Pendiente» en docs/05 §5): backend **FastAPI + Pydantic + SQLAlchemy 2.0** sobre **PostgreSQL** (instancia Supabase ya provista en `.env`). Frontend pendiente.
+- **Estado:** VIGENTE como decisión de equipo; **no** sustituye la autorización institucional.
+- **Condición de revocación:** si la institución aprueba un catálogo autorizado, la versión sintética **DEBE** dejar de publicarse; y ninguna versión con `is_synthetic: true` puede servirse a una persona en orientación real.
+- **Fuentes:** [tasks.md — Fuera del alcance](../tasks.md), [docs/05 §5 y §6](../../../../docs/05-stack-tecnologico-y-arquitectura.md), [docs/06 — Fase 2](../../../../docs/06-reparto-de-implementacion-por-fases.md).
+
 ## Convención de estado
 
 - **PENDIENTE DE CONFIRMACIÓN:** falta respuesta, autoridad o evidencia externa verificable.
